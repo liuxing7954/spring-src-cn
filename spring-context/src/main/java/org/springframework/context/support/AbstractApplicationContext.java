@@ -395,6 +395,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Multicast right now if possible - or lazily once the multicaster is initialized
+		// 根据这个earlyApplicationEvents是否为null判断, 是立即处理事件还是添加以后处理
+		// 为null说明监听器还没有初始化好?
 		if (this.earlyApplicationEvents != null) {
 			this.earlyApplicationEvents.add(applicationEvent);
 		}
@@ -549,6 +551,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+				// 最后一步,发布事件
 				finishRefresh();
 			}
 

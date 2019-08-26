@@ -46,8 +46,10 @@ import org.springframework.lang.Nullable;
 public abstract class ReflectionUtils {
 
 	/**
-	 * Pre-built MethodFilter that matches all non-bridge non-synthetic methods
-	 * which are not declared on {@code java.lang.Object}.
+	 * 提前构建的MethodFilter,匹配所有non-bridge和non-synthetic的方法,并且都不是继承自Object的方法
+	 * 所谓bridge和synthetic就是对于桥接方法的一个字节码标记
+	 * 桥接方法例如继承泛型类后声明了具体的对象类型的方法,实际字节码生成其实和生成两个方法用于兼容旧jdk
+	 * 实际见 https://blog.csdn.net/z69183787/article/details/81115524
 	 * @since 3.0.5
 	 */
 	public static final MethodFilter USER_DECLARED_METHODS =
@@ -340,10 +342,10 @@ public abstract class ReflectionUtils {
 	}
 
 	/**
-	 * Perform the given callback operation on all matching methods of the given
-	 * class and superclasses (or given interface and super-interfaces).
-	 * <p>The same named method occurring on subclass and superclass will appear
-	 * twice, unless excluded by the specified {@link MethodFilter}.
+	 * 对给定的class对象或接口对象中的所有方法执行回调方法.
+	 * 同样的回调会在子类和父类中同名的方法中执行两次,除非用mf对象进行过滤. ReflectionUtils.USER_DECLARED_METHODS这个可以
+	 * 如果不过滤,会从给的类对象再获取父类,再获取接口,递归循环到结束为止
+	 * //todo:jxy 做个测试呗
 	 * @param clazz the class to introspect
 	 * @param mc the callback to invoke for each method
 	 * @param mf the filter that determines the methods to apply the callback to

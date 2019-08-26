@@ -55,15 +55,26 @@ public final class MethodIntrospector {
 	 * @return the selected methods associated with their metadata (in the order of retrieval),
 	 * or an empty map in case of no match
 	 */
+	/**
+	 * 回调方法入参是方法,回调是方法返回的一个对象,也可以看做是判断条件
+	 * 如果此对象不为空,说明这个方法是需要返回的方法,会添加到返回结果中返回.
+	 * 所以这个方法可以看做一个过滤方法,既可以过滤,又可以拿到作为过滤条件的对象结果,例如注解
+	 * @param targetType
+	 * @param metadataLookup
+	 * @param <T>
+	 * @return
+	 */
 	public static <T> Map<Method, T> selectMethods(Class<?> targetType, final MetadataLookup<T> metadataLookup) {
 		final Map<Method, T> methodMap = new LinkedHashMap<>();
 		Set<Class<?>> handlerTypes = new LinkedHashSet<>();
 		Class<?> specificHandlerType = null;
 
+		//如果目标类的代理类,则拿到他的真实类
 		if (!Proxy.isProxyClass(targetType)) {
 			specificHandlerType = ClassUtils.getUserClass(targetType);
 			handlerTypes.add(specificHandlerType);
 		}
+		//再获取所有实现的接口,都放到handlerTypes对象中.做什么用????没想到这个方法这么鸡儿复杂
 		handlerTypes.addAll(ClassUtils.getAllInterfacesForClassAsSet(targetType));
 
 		for (Class<?> currentHandlerType : handlerTypes) {

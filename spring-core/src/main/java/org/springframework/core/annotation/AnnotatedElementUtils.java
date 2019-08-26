@@ -621,6 +621,13 @@ public abstract class AnnotatedElementUtils {
 	 * @see #findMergedAnnotationAttributes(AnnotatedElement, String, boolean, boolean)
 	 * @see #getMergedAnnotationAttributes(AnnotatedElement, Class)
 	 */
+	/**\
+	 * //todo: 我tm倒是要研究下你又什么不一样?????     19-08-24
+	 * @param element
+	 * @param annotationType
+	 * @param <A>
+	 * @return
+	 */
 	@Nullable
 	public static <A extends Annotation> A findMergedAnnotation(AnnotatedElement element, Class<A> annotationType) {
 		// Shortcut: directly present on the element, with no merging needed?

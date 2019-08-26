@@ -149,6 +149,7 @@ public class EventListenerMethodProcessor
 
 			Map<Method, EventListener> annotatedMethods = null;
 			try {
+				//这里是一个filter目标类所有方法的静态方法,还可以,挺装逼的.无论是否是已经被cglib代理过的类哦
 				annotatedMethods = MethodIntrospector.selectMethods(targetType,
 						(MethodIntrospector.MetadataLookup<EventListener>) method ->
 								AnnotatedElementUtils.findMergedAnnotation(method, EventListener.class));
@@ -160,6 +161,7 @@ public class EventListenerMethodProcessor
 				}
 			}
 
+			//如果没有标记EventListener的方法的类,就加入到这个set集合中
 			if (CollectionUtils.isEmpty(annotatedMethods)) {
 				this.nonAnnotatedClasses.add(targetType);
 				if (logger.isTraceEnabled()) {

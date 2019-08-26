@@ -127,8 +127,14 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 		multicastEvent(event, resolveDefaultEventType(event));
 	}
 
+	/**
+	 *
+	 * @param-event-事件类型,但其实继续传递此参数的作用是用于获取的是携带的源类型,或者与当前方法解析出一个默认的resolvable对象
+	 * @param-resolvable对象,如果没有,由上一个参数生成
+	 */
 	@Override
 	public void multicastEvent(final ApplicationEvent event, @Nullable ResolvableType eventType) {
+		//解析出ResolvableType对象.
 		ResolvableType type = (eventType != null ? eventType : resolveDefaultEventType(event));
 		Executor executor = getTaskExecutor();
 		for (ApplicationListener<?> listener : getApplicationListeners(event, type)) {
